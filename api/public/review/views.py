@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from fastapi import APIRouter, Depends, Query
 from sqlmodel import Session
 
@@ -19,7 +21,7 @@ def create_a_review(review: ReviewCreate, db: Session = Depends(get_session),
 
 @router.get("/user_got/{user_id}", response_model=list[ReviewRead], dependencies=[Depends(current_accepted_user)])
 def get_user_got_reviews(
-        user_id: int,
+        user_id: UUID,
         offset: int = 0,
         limit: int = Query(default=100, lte=100),
         db: Session = Depends(get_session)
@@ -29,7 +31,7 @@ def get_user_got_reviews(
 
 @router.get("/user_gave/{user_id}", response_model=list[ReviewRead], dependencies=[Depends(current_accepted_user)])
 def get_user_gave_reviews(
-        user_id: int,
+        user_id: UUID,
         offset: int = 0,
         limit: int = Query(default=100, lte=100),
         db: Session = Depends(get_session)
@@ -37,7 +39,7 @@ def get_user_gave_reviews(
     return read_user_gave_reviews(user_id=user_id, offset=offset, limit=limit, db=db)
 
 
-@router.patch("/{review_id}", response_model=ReviewRead, dependencies=[Depends(current_accepted_user)])
+@router.patch("/{review_id}", response_model=ReviewUpdate, dependencies=[Depends(current_accepted_user)])
 def update_a_review(review_id: int, review: ReviewUpdate, db: Session = Depends(get_session)):
     return update_review(review_id=review_id, review=review, db=db)
 

@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from fastapi import HTTPException, status, Depends
 from sqlmodel import Session, select
 
@@ -17,13 +19,13 @@ def create_review(review: ReviewCreate, db: Session = None,
     return review_to_db
 
 
-def read_user_got_reviews(user_id: int, offset: int = 0, limit: int = 20, db: Session = None):
+def read_user_got_reviews(user_id: UUID, offset: int = 0, limit: int = 20, db: Session = None):
     reviews = db.exec(select(Review).where(Review.user_id_to == user_id).offset(offset).limit(limit)).all()
 
     return [ReviewRead.from_orm(review) for review in reviews]
 
 
-def read_user_gave_reviews(user_id: int, offset: int = 0, limit: int = 20, db: Session = None):
+def read_user_gave_reviews(user_id: UUID, offset: int = 0, limit: int = 20, db: Session = None):
     reviews = db.exec(select(Review).where(Review.user_id_from == user_id).offset(offset).limit(limit)).all()
 
     return [ReviewRead.from_orm(review) for review in reviews]

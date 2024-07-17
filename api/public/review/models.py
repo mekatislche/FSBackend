@@ -18,12 +18,12 @@ class ReviewRating(str, Enum):
 class ReviewBase(SQLModel):
     rating: Optional[ReviewRating] = Field(default=None)
     review_text: Optional[str] = Field(default=None)
-    user_id_from: UUID4 = Field(foreign_key='user.id')
-    user_id_to: UUID4 = Field(foreign_key='user.id')
 
 
 class Review(ReviewBase, table=True):
     review_id: Optional[int] = Field(primary_key=True)
+    user_id_from: UUID4 = Field(foreign_key='user.id')
+    user_id_to: UUID4 = Field(foreign_key='user.id')
     created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
     updated_at: Optional[datetime] = Field(
         default_factory=datetime.utcnow,
@@ -39,12 +39,11 @@ class ReviewCreate(ReviewBase):
 
 
 class ReviewRead(ReviewBase):
-    review_id: UUID4
+    review_id: Optional[int]
     rating: Optional[ReviewRating]
     review_text: Optional[str]
 
 
 class ReviewUpdate(ReviewBase):
-    review_id: UUID4
     rating: Optional[ReviewRating]
     review_text: Optional[str]

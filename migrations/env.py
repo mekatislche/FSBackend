@@ -9,7 +9,7 @@ import os
 from api.public.listing.models import *
 from api.public.user.models import *
 from api.public.user_info.models import *
-from api.public.trials.models import *
+# from api.public.trials.models import *
 from api.public.listing_picture.models import *
 
 
